@@ -92,6 +92,11 @@ module Rmate
        @size = @data.size
      end
 
+     def create_new_file
+       @data = ''
+       @size = 0
+     end
+
      def send(socket)
        socket.puts @command
        @variables.each_pair do |name, value|
@@ -199,7 +204,7 @@ if __FILE__ == $PROGRAM_NAME
     cmd['file-type']    = $settings.types[idx] if $settings.types.length > idx
     cmd.read_stdin                    if path == '-'
     cmd.read_file(path)               if path != '-' and File.exist? path
-    cmd['data']         = "0"     unless path == '-' or  File.exist? path
+    cmd.create_new_file()             unless File.exist? path 
     cmds << cmd
   end
 
